@@ -1,7 +1,21 @@
 data/*
 !data/.gitkeep
+# Ignore all files in data/
+data/*
+data/clean/*
+data/clean/graph_cache/*
+# But don’t ignore the placeholder .gitkeep files
+# If you have subfolders, put a .gitkeep in each and un-ignore them too:
+!data/.gitkeep
+!data/clean/
+!data/clean/.gitkeep
+!data/clean/graph_cache/
+!data/clean/graph_cache/.gitkeep
+
 node_modules
 .venv/
 __pycache__/
 *.pyc
 .DS_Store
+# Notebook checkpoints
+.ipynb_checkpoints/
