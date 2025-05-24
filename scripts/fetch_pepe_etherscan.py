@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 # ─── CONFIG ────────────────────────────────────────────────────────
-API_KEY    = "RQHXUAGGCZZPBJU6MXSFTWUQ7EB6WK5BFR"
+API_KEY    = "RQHXUAGGC...TWUQ7EB6WK5BFR" # shortened for security
 CONTRACT   = "0x6982508145454ce325ddbe47a25d4ec3d2311933"  # PEPE token
 BASE_URL   = "https://api.etherscan.io/api"
 OUT_CSV     = Path(__file__).parent.parent / "data" / "pepe-transfers-etherscan.csv"
