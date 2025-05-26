@@ -8,7 +8,6 @@ cd netsci_Ahmet_Benedikt
 python3 -m venv .venv          # Create virtual environment
 source .venv/bin/activate      # Activate it (or .venv\Scripts\activate on Windows)
 pip install -r requirements.txt
-pip install -e .
 pip install nbformat jupyter  # for notebook scaffolding and editing
 jupyter notebook
 

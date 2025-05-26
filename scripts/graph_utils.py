@@ -1,7 +1,7 @@
-# scripts/graph_utils.py
-
 import pandas as pd
 import networkx as nx
+# REMOVED: from networkx.readwrite.gpickle import read_gpickle, write_gpickle
+import pickle # ADDED: Import Python's standard pickle module
 from pathlib import Path
 
 # Paths
@@ -25,22 +25,24 @@ def _cache_path(threshold, kind, start_date, end_date):
     name = f"G_{kind}_min{threshold}"
     if start_date or end_date:
         name += f"_{start_date or ''}_{end_date or ''}"
-    return CACHE_DIR / f"{name}.gpickle"
+    return CACHE_DIR / f"{name}.gpickle" # Keep .gpickle extension, it's just a convention
 
 def build_unweighted_graph(df, threshold=0, start_date=None, end_date=None, use_cache=True):
     """
     Build (or load) the unweighted DiGraph for this df slice.
-    If use_cache=True, first try to load a .gpickle; if missing, build+save.
+    If use_cache=True, try to load a .gpickle first; if missing, build + save.
     """
     cache = _cache_path(threshold, "unw", start_date, end_date)
     if use_cache and cache.exists():
-        return nx.read_gpickle(cache)
+        with open(cache, 'rb') as f: # Use standard pickle for loading
+            return pickle.load(f)
 
     G = nx.DiGraph()
     G.add_edges_from(zip(df.from_address, df.to_address))
 
     if use_cache:
-        nx.write_gpickle(G, cache)
+        with open(cache, 'wb') as f: # Use standard pickle for saving
+            pickle.dump(G, f)
     return G
 
 def build_weighted_graph(df, threshold=0, start_date=None, end_date=None, use_cache=True):
@@ -50,7 +52,8 @@ def build_weighted_graph(df, threshold=0, start_date=None, end_date=None, use_ca
     """
     cache = _cache_path(threshold, "w", start_date, end_date)
     if use_cache and cache.exists():
-        return nx.read_gpickle(cache)
+        with open(cache, 'rb') as f: # Use standard pickle for loading
+            return pickle.load(f)
 
     G = nx.DiGraph()
     for u, v, w in zip(df.from_address, df.to_address, df.value_token):
@@ -60,5 +63,6 @@ def build_weighted_graph(df, threshold=0, start_date=None, end_date=None, use_ca
             G.add_edge(u, v, weight=w)
 
     if use_cache:
-        nx.write_gpickle(G, cache)
+        with open(cache, 'wb') as f: # Use standard pickle for saving
+            pickle.dump(G, f)
     return G
